@@ -15,7 +15,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <main className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+    <main className="relative h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden">
       {/* 1. Static Background (Animated Entry) */}
       <BackgroundImage />
 
