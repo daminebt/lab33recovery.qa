@@ -15,6 +15,9 @@ interface WaitlistModalProps {
 }
 
 export default function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
+    const [submitting, setSubmitting] = useState(false);
+    const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
     const [formData, setFormData] = useState({
         gender: "",
         firstName: "",
@@ -26,10 +29,42 @@ export default function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
         email: "",
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Form Submitted:", formData);
-        onClose();
+        setSubmitting(true);
+        setStatus('idle');
+
+        try {
+            const { collection, addDoc, serverTimestamp } = await import("firebase/firestore");
+            const { db } = await import("@/lib/firebase");
+
+            await addDoc(collection(db, "waitlist"), {
+                ...formData,
+                birthdate: formData.birthdate ? formData.birthdate.toISOString() : null,
+                createdAt: serverTimestamp(),
+            });
+
+            setStatus('success');
+            setFormData({
+                gender: "",
+                firstName: "",
+                lastName: "",
+                birthdate: null,
+                nationality: "QA",
+                phoneIso: "QA",
+                phone: "",
+                email: "",
+            });
+            setTimeout(() => {
+                onClose();
+                setStatus('idle');
+            }, 2000);
+        } catch (error) {
+            console.error("Error adding document: ", error);
+            setStatus('error');
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -79,13 +114,13 @@ export default function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                             {/* Header Section - Minimal, Professional */}
                             <div className="space-y-1 mb-6 sticky top-0 bg-[#030303]/95 backdrop-blur-xl z-20 py-2 -mt-2 border-b border-white/5">
                                 <div className="flex items-center gap-2">
-                                    <div className="w-1 h-1 bg-white/60 rounded-full" />
+                                    <div className={`w-1 h-1 rounded-full ${status === 'success' ? 'bg-green-500' : status === 'error' ? 'bg-red-500' : 'bg-white/60'}`} />
                                     <h2 className="text-lg md:text-xl font-display font-medium text-white tracking-[0.1em] uppercase">
-                                        Join the Waitlist
+                                        {status === 'success' ? 'Registration Successful' : status === 'error' ? 'Error Submitting' : 'Join the Waitlist'}
                                     </h2>
                                 </div>
                                 <p className="text-[9px] font-mono text-white/30 tracking-[0.15em] uppercase ml-3">
-                                    Complete the form to register your interest.
+                                    {status === 'success' ? 'Thank you for your interest.' : 'Complete the form to register your interest.'}
                                 </p>
                             </div>
 
@@ -156,7 +191,8 @@ export default function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                                     whileHover={{ scale: 1.005 }}
                                     whileTap={{ scale: 0.99 }}
                                     type="submit"
-                                    className="group relative w-full py-3.5 overflow-hidden rounded-xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+                                    disabled={submitting}
+                                    className={`group relative w-full py-3.5 overflow-hidden rounded-xl transition-all duration-300 ${submitting ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]'}`}
                                 >
                                     {/* Background Layer */}
                                     <div className="absolute inset-0 bg-white/5 border border-white/10 group-hover:bg-white group-hover:border-white transition-all duration-300" />
@@ -169,7 +205,7 @@ export default function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                                     {/* Text Content */}
                                     <div className="relative z-10 flex items-center justify-center gap-2">
                                         <span className="font-display font-medium tracking-[0.2em] uppercase text-xs text-white group-hover:text-black transition-colors duration-300">
-                                            Submit Registration
+                                            {submitting ? 'Registering...' : status === 'success' ? 'Success' : 'Submit Registration'}
                                         </span>
                                     </div>
                                 </motion.button>
