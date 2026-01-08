@@ -75,9 +75,9 @@ export default function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                         </button>
 
                         {/* Form Content */}
-                        <form onSubmit={handleSubmit} className="relative z-10 space-y-5">
+                        <form onSubmit={handleSubmit} className="relative z-10 max-h-[75dvh] md:max-h-[85vh] overflow-y-auto no-scrollbar pr-1 flex flex-col pb-safe">
                             {/* Header Section - Minimal, Professional */}
-                            <div className="space-y-1 mb-6">
+                            <div className="space-y-1 mb-6 sticky top-0 bg-[#030303]/95 backdrop-blur-xl z-20 py-2 -mt-2 border-b border-white/5">
                                 <div className="flex items-center gap-2">
                                     <div className="w-1 h-1 bg-white/60 rounded-full" />
                                     <h2 className="text-lg md:text-xl font-display font-medium text-white tracking-[0.1em] uppercase">

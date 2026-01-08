@@ -8,7 +8,7 @@ export default function LocationIndicator() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
-            className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 flex items-center gap-3 md:gap-4"
+            className="fixed bottom-24 right-6 md:bottom-8 md:right-8 z-50 flex items-center gap-3 md:gap-4"
         >
             <div className="flex flex-col items-end text-right">
                 {/* Top Row: Main Location */}
