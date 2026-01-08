@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
+
+  --color-lab-black: #050505;
+  --color-lab-dark: #0a0a0a;
+  --color-lab-cyan: #00f0ff;
+  --color-lab-violet: #7000ff;
+  --color-lab-glass: rgba(255, 255, 255, 0.05);
+
+  --animate-spin-slow: spin 8s linear infinite;
+  --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;
+
+  @keyframes pulse-glow {
+
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+    }
+
+    50% {
+      opacity: 0.8;
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.2);
+    }
+  }
+}
+
+:root {
+  --background: var(--color-lab-black);
+  --foreground: #ffffff;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  /* Prevent scroll on Coming Soon page */
+}
+
+/* Custom Scrollbar (if needed later) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-lab-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-lab-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-lab-cyan);
+}
