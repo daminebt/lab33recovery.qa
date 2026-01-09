@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import CustomCursor from "@/components/ui/CustomCursor";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,8 +32,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${inter.variable} ${spaceGrotesk.variable} antialiased bg-black text-white`}
+        className={`${inter.variable} ${spaceGrotesk.variable} antialiased bg-black text-white cursor-none`}
       >
+        <CustomCursor />
         {children}
       </body>
     </html>
